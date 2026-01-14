@@ -1,0 +1,80 @@
+// File: playtime.sv
+module Playtime (clk, reset, sprite_grid, spike_grid, score, hit);
+
+    // Ports declared inside (your style)
+    input  logic        clk, reset;                    // active-HIGH, synchronous
+    input  logic [15:0][15:0] sprite_grid;             // row 0 = bottom, row 15 = top
+    input  logic [15:0][15:0] spike_grid;              // MSB = leftmost column in each row
+    output logic [15:0]       score;                   // running score
+    output logic              hit;                     // 1 if any overlap this cycle
+
+    // State: previous sprite row (to detect upward moves)
+    logic [3:0] prev_row_ps, prev_row_ns;
+    logic [15:0] score_ps, score_ns;
+
+    // Comb temps
+    logic [3:0] cur_row;               // decoded sprite row this cycle
+    logic       row_found;
+    logic       hit_any;
+    integer     r;
+
+    // ---------------- Combinational: next-state + outputs ----------------
+    always_comb begin
+        // defaults
+        prev_row_ns = prev_row_ps;
+        score_ns    = score_ps;
+        hit_any     = 1'b0;
+
+        // decode current sprite row (expects exactly one nonzero row;
+        // if none found, hold last known row)
+        cur_row   = prev_row_ps;
+        row_found = 1'b0;
+        for (r = 0; r < 16; r = r + 1) begin
+            // overlap detection per row
+            if ( (sprite_grid[r] & spike_grid[r]) != 16'd0 ) hit_any = 1'b1;
+
+            // sprite row detect (any bit set in that row)
+            if (!row_found && (sprite_grid[r] != 16'd0)) begin
+                cur_row   = r[3:0];
+                row_found = 1'b1;
+            end
+        end
+
+        // expose overlap
+        hit = hit_any;
+
+        // score rule:
+        // increment by 1 when the sprite moves UP (to a higher row index)
+        // AND there's no hit this cycle.
+        if ((cur_row > prev_row_ps) && (hit_any == 1'b0)) begin
+            score_ns = score_ps + 16'd1;
+        end
+
+        // remember current row for next cycle
+        prev_row_ns = cur_row;
+    end
+
+    // ---------------- Sequential: registers ----------------
+    always_ff @(posedge clk) begin
+        if (reset) begin
+            // initialize score to 0, and seed prev_row with the *current* decoded row
+            // so we don't falsely score on the first frame after reset.
+            score_ps    <= 16'd0;
+
+            // Decode once on reset using the current sprite_grid
+            // (legal to read comb signals in seq block)
+            // Fallback to row 0 if nothing is set.
+            logic [3:0] init_row;
+            integer rr;
+            init_row = 4'd0;
+            for (rr = 0; rr < 16; rr = rr + 1) begin
+                if (sprite_grid[rr] != 16'd0) init_row = rr[3:0];
+            end
+            prev_row_ps <= init_row;
+        end else begin
+            score_ps    <= score_ns;
+            prev_row_ps <= prev_row_ns;
+        end
+    end
+
+endmodule

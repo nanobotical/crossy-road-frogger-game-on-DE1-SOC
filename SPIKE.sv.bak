@@ -1,0 +1,152 @@
+module SPIKE (clk, reset, grid);
+
+    // ---------------- Ports ----------------
+    input  logic        clk, reset;           // active-HIGH, synchronous
+    output logic [15:0][15:0] grid;           // 16x16, row 0=bottom, MSB=left
+
+    // ---------------- Params ----------------
+    localparam int NROWS    = 16;
+    localparam int MAX_OBJS = 4;
+
+    // ---------------- Types ----------------
+    typedef enum logic {DIR_LEFT, DIR_RIGHT} dir_t;
+
+    // ---------------- State ----------------
+    // Per-lane (row) state
+    logic [15:0] lane_mask_ps [NROWS], lane_mask_ns [NROWS];
+    dir_t        lane_dir_ps  [NROWS], lane_dir_ns  [NROWS];
+    logic [1:0]  lane_spd_ps  [NROWS], lane_spd_ns  [NROWS];  // 0..3
+    logic [7:0]  lane_cnt_ps  [NROWS], lane_cnt_ns  [NROWS];  // countdown
+
+    // LFSR for randomness (x^16 + x^14 + x^13 + x^11 + 1)
+    logic [15:0] lfsr_ps, lfsr_ns;
+    logic        lfsr_fb;
+
+    // ---------------- Combinational: next + outputs ----------------
+    always_comb begin
+        // LFSR next
+        lfsr_fb = lfsr_ps[15] ^ lfsr_ps[13] ^ lfsr_ps[12] ^ lfsr_ps[10];
+        lfsr_ns = {lfsr_ps[14:0], lfsr_fb};
+
+        // defaults
+        grid = '{default: 16'd0};
+
+        // per-lane next-state and draw
+        for (int r = 0; r < NROWS; r++) begin
+            // default hold
+            lane_mask_ns[r] = lane_mask_ps[r];
+            lane_dir_ns [r] = lane_dir_ps [r];
+            lane_spd_ns [r] = lane_spd_ps [r];
+            lane_cnt_ns [r] = lane_cnt_ps [r];
+
+            // tick
+            if (lane_cnt_ps[r] == 8'd0) begin
+                // rotate by 1 in lane direction
+                if (lane_dir_ps[r] == DIR_LEFT) begin
+                    // rotl16
+                    lane_mask_ns[r] = {lane_mask_ps[r][14:0], lane_mask_ps[r][15]};
+                end else begin
+                    // rotr16
+                    lane_mask_ns[r] = {lane_mask_ps[r][0],    lane_mask_ps[r][15:1]};
+                end
+
+                // reload countdown from speed select
+                case (lane_spd_ps[r])
+                    2'd0: lane_cnt_ns[r] = 8'd1;   // fastest
+                    2'd1: lane_cnt_ns[r] = 8'd2;
+                    2'd2: lane_cnt_ns[r] = 8'd4;
+                    default: lane_cnt_ns[r] = 8'd8; // slowest
+                endcase
+            end else begin
+                lane_cnt_ns[r] = lane_cnt_ps[r] - 8'd1;
+            end
+
+            // draw lane into grid row r
+            grid[r] = lane_mask_ns[r];
+        end
+    end
+
+    // ---------------- Sequential: state / reset init ----------------
+    always_ff @(posedge clk) begin
+        if (reset) begin
+            // seed LFSR (non-zero)
+            lfsr_ps <= 16'h1ACE;
+
+            // per-lane randomize
+            for (int r = 0; r < NROWS; r++) begin
+                // advance LFSR a couple times for decorrelation
+                lfsr_ps <= {lfsr_ps[14:0], (lfsr_ps[15]^lfsr_ps[13]^lfsr_ps[12]^lfsr_ps[10])};
+                lfsr_ps <= {lfsr_ps[14:0], (lfsr_ps[15]^lfsr_ps[13]^lfsr_ps[12]^lfsr_ps[10])};
+
+                // direction
+                if (lfsr_ps[0] == 1'b0) lane_dir_ps[r] <= DIR_LEFT;
+                else                     lane_dir_ps[r] <= DIR_RIGHT;
+
+                // speed select 0..3
+                lane_spd_ps[r] <= lfsr_ps[2+:2];
+
+                // start with empty lane
+                lane_mask_ps[r] <= 16'd0;
+
+                // number of cars 0..4 (clamp from 0..7)
+                int nobjs;
+                nobjs = {lfsr_ps[6], lfsr_ps[5], lfsr_ps[4]};
+                if (nobjs > MAX_OBJS) nobjs = MAX_OBJS;
+
+                // place up to 4 cars
+                for (int k = 0; k < MAX_OBJS; k++) begin
+                    // advance LFSR for new randoms
+                    lfsr_ps <= {lfsr_ps[14:0], (lfsr_ps[15]^lfsr_ps[13]^lfsr_ps[12]^lfsr_ps[10])};
+
+                    if (k < nobjs) begin
+                        logic [3:0] col;
+                        logic [1:0] len_sel;   // 0->len1, 1->len2, 2->len3, 3->len3
+                        logic [15:0] car;
+
+                        // random start column 0..15 (0 = left/MSB)
+                        col = lfsr_ps[7:4];
+
+                        // strictly 1,2,3
+                        if (lfsr_ps[9] == 1'b1)      len_sel = 2'd2; // 3
+                        else if (lfsr_ps[8] == 1'b1) len_sel = 2'd1; // 2
+                        else                         len_sel = 2'd0; // 1
+
+                        // build a left-anchored mask for the chosen length
+                        // len1: 1000..., len2: 1100..., len3: 1110...
+                        case (len_sel)
+                            2'd0: car = 16'b1000_0000_0000_0000;
+                            2'd1: car = 16'b1100_0000_0000_0000;
+                            default: car = 16'b1110_0000_0000_0000;
+                        endcase
+
+                        // rotate right by 'col' to position start (wrap)
+                        for (int c = 0; c < 16; c++) begin
+                            if (c < col) car = {car[0], car[15:1]}; // rotr16
+                        end
+
+                        // merge into lane (overlap is fine)
+                        lane_mask_ps[r] <= lane_mask_ps[r] | car;
+                    end
+                end
+
+                // initial countdown from speed
+                case (lane_spd_ps[r])
+                    2'd0: lane_cnt_ps[r] <= 8'd1;
+                    2'd1: lane_cnt_ps[r] <= 8'd2;
+                    2'd2: lane_cnt_ps[r] <= 8'd4;
+                    default: lane_cnt_ps[r] <= 8'd8;
+                endcase
+            end
+        end else begin
+            // normal updates
+            lfsr_ps <= lfsr_ns;
+            for (int r = 0; r < NROWS; r++) begin
+                lane_mask_ps[r] <= lane_mask_ns[r];
+                lane_dir_ps [r] <= lane_dir_ns [r];
+                lane_spd_ps [r] <= lane_spd_ns [r];
+                lane_cnt_ps [r] <= lane_cnt_ns [r];
+            end
+        end
+    end
+
+endmodule

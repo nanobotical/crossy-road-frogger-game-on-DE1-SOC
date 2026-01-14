@@ -1,0 +1,195 @@
+module DE1_SoC (CLOCK_50, HEX0, HEX1, HEX2, HEX3, HEX4, HEX5, KEY, LEDR, SW);
+	input logic CLOCK_50; // 50MHz clock.
+	output logic [6:0] HEX0, HEX1, HEX2, HEX3, HEX4, HEX5;
+	output logic [9:0] LEDR;
+	input logic [3:0] KEY; // True when not pressed, False when pressed
+	input logic [9:0] SW;
+	// Generate clk off of CLOCK_50, whichClock picks rate.
+	assign HEX1 = 7'b1111111;
+	assign HEX2 = 7'b1111111;
+	assign HEX3 = 7'b1111111;
+	assign HEX4 = 7'b1111111;
+	logic reset;
+	logic [31:0] div_clk;
+	assign reset = SW[9];
+	parameter whichClock = 15; // 0.75 Hz clock
+	clock_divider cdiv (.clock(CLOCK_50),.reset(reset),.divided_clocks(div_clk));
+	// Clock selection; allows for easy switching between simulation and board clocks
+	logic clkSelect;
+	// Uncomment ONE of the following two lines depending on intention
+	//assign clkSelect = CLOCK_50; // for simulation
+	assign clkSelect = div_clk[whichClock]; // for board
+	// Set up FSM inputs and outputs.
+	logic [1:0] in;
+	logic [8:0] leds;
+	logic [9:0] Rand;
+	logic [6:0]  hexA, hexB;
+	logic press_comp;
+	logic button;
+	
+	//LFSR Instantiate
+	LFSR l0 ( .Clock(clkSelect), .Reset(reset), .num(Rand) );
+
+   // Instantiate cyber player
+   cyber_player PL2 ( .clk(clkSelect), .reset(reset), .SW(SW[8:0]), .Rand(Rand), .press_comp(press_comp) );
+	
+	assign in[1] = press_comp;
+	 
+	 
+	
+	// buttons for the two different players 
+	//button player2 ( .clk(clkSelect),.pressed(~KEY[3]), .set(button[1]));
+	button player1 ( .clk(clkSelect),.pressed(~KEY[0]), .set(button));
+	//userin left ( .clk(clkSelect),.in(button[1]), .out(in[1]));
+	userin right ( .clk(clkSelect),.in(button), .out(in[0])); 
+	
+	
+	war s (.clk(clkSelect), .reset(reset), .in ,.leds, .hexA,.hexB);
+	
+	// Show signals on LEDRs so we can see what is happening
+	assign LEDR[9:1] = leds;
+	assign HEX5 = hexA;
+	assign HEX0 = hexB;
+	
+endmodule
+
+module button( clk, pressed, set);
+	input logic pressed;
+	input logic clk;
+	output logic set;
+	logic temp;
+	
+	
+	always_ff @(posedge clk) begin
+	
+			temp<= pressed;
+			set<= temp;
+    end
+	
+
+	
+endmodule
+
+module userin( clk, in, out);
+	input logic in;
+	input logic clk;
+	output logic out;
+	logic temp;
+	
+	
+	enum bit[0:0] {on,off} ps,ns;
+	
+	always_comb begin
+		case(ps)
+		 off: begin
+				if (in) ns = on;
+				else ns = off;
+				
+				end
+		 on: begin
+		 	  if (~in) ns = off;
+			  else ns = on;
+			  
+			  end
+		endcase
+		
+	end
+	assign out = (ps== off && in);
+	
+	always_ff @(posedge clk) begin
+		 ps<= ns;
+    end
+	
+
+	
+endmodule
+
+
+
+module DE1_SoC_testbench();
+    // DUT I/O
+    logic CLOCK_50;
+    logic [3:0] KEY;
+    logic [9:0] SW;
+    wire  [9:0] LEDR;
+    wire  [6:0] HEX0, HEX1, HEX2, HEX3, HEX4, HEX5;
+
+    // instantiate DUT
+    DE1_SoC dut (CLOCK_50, HEX0, HEX1, HEX2, HEX3, HEX4, HEX5, KEY, LEDR, SW);
+
+    // 50 MHz base clock
+    parameter CLOCK_PERIOD = 100;
+    initial CLOCK_50 = 0;
+    always  #(CLOCK_PERIOD/2) CLOCK_50 = ~CLOCK_50;
+
+    // ---------- helpers (use DUT's divided clock) ----------
+    task wait_clk(input int n); int i; begin
+        for (i=0; i<n; i=i+1) @(posedge dut.clkSelect);
+    end endtask
+
+    task soft_reset(); begin
+        SW[9] = 1; wait_clk(3);
+        SW[9] = 0; wait_clk(2);
+    end endtask
+
+    task set_difficulty(input [8:0] th); begin
+        SW[8:0] = th; wait_clk(1);
+    end endtask
+
+    // KEY0 = human right button (active-low)
+    task press_right(input int hold_cycles); begin
+        KEY[0] = 0;              // press
+        wait_clk(hold_cycles);   // ≥2 to pass 2-FF sync
+        KEY[0] = 1;              // release
+        wait_clk(1);
+    end endtask
+
+    
+    // ---------- stimulus ----------
+    initial begin
+        // power-up defaults
+        KEY      = 4'b1111;   // all released
+        SW       = 10'b0;     // reset=0, diff=0
+        wait_clk(2);
+
+        // global reset
+        soft_reset();
+
+        // ============================================================
+        // 1) HUMAN WINS (robot off): set difficulty = 0
+        //    Robot never presses (SW <= Rand never true).
+        //    5 presses to push center->right edge->win.
+        // ============================================================
+        set_difficulty(9'd0);
+        press_right(3); press_right(3); press_right(3); press_right(3); press_right(3);
+		  press_right(3); press_right(3); press_right(3); press_right(3); press_right(3);
+        wait_clk(6);
+
+        // field auto-resets (scores should hold). Do a soft reset to start fresh field.
+        
+
+        // ============================================================
+        // 2) ROBOT WINS: strong robot (frequent left presses)
+        //    No human presses; wait long enough for left to reach win.
+        // ============================================================
+        set_difficulty(9'd511);  // very strong robot
+        wait_clk(80);            // let the cyber-player do its thing
+        
+
+        // ============================================================
+        // 3) HEAD-TO-HEAD: medium difficulty, human taps sometimes
+        //    Run a few bursts with interleaved human presses.
+        // ============================================================
+        set_difficulty(9'd256);  // medium robot
+        repeat (3) begin
+            wait_clk(12);
+            press_right(3);
+            wait_clk(10);
+            press_right(3);
+        end
+
+        // end
+        wait_clk(10);
+        $stop;
+    end
+endmodule

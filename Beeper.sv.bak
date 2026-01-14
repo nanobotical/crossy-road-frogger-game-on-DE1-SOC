@@ -1,0 +1,229 @@
+module Beeper (clk, reset, play_en, die_pulse, audio_out);
+
+    input  logic clk, reset;     // active-HIGH, synchronous
+    input  logic play_en;        // 1=play background melody
+    input  logic die_pulse;      // 1-cycle trigger for die SFX
+    output logic audio_out;      // 1-bit to speaker/buzzer GPIO
+
+    // wires
+    logic [31:0] mel_div, sfx_div, sel_div;
+    logic        mel_playing, sfx_active;
+    logic        tone_en;
+
+    // submodules
+    Melody   u_mel (.clk(clk), .reset(reset), .play_en(play_en), .note_div(mel_div), .playing(mel_playing));
+    SFX_Die  u_sfx (.clk(clk), .reset(reset), .die_pulse(die_pulse), .note_div(sfx_div), .active(sfx_active));
+
+    // choose SFX over melody; enable if div != 0
+    always_comb begin
+        sel_div = mel_div;
+        if (sfx_active) sel_div = sfx_div;
+
+        tone_en = 1'b0;
+        if (sel_div != 32'd0) tone_en = 1'b1;
+    end
+
+    ToneGen  u_tone (.clk(clk), .reset(reset), .enable(tone_en), .note_div(sel_div), .audio_out(audio_out));
+endmodule
+
+
+module Melody (clk, reset, play_en, note_div, playing);
+
+    input  logic       clk, reset;          // active-HIGH, synchronous
+    input  logic       play_en;             // 1 = run melody
+    output logic [31:0] note_div;           // current note half-period
+    output logic       playing;             // 1 while melody active
+
+    // constants (50 MHz clock divisors)
+    localparam logic [31:0] DIV_C4 = 32'd95555;
+    localparam logic [31:0] DIV_D4 = 32'd85132;
+    localparam logic [31:0] DIV_E4 = 32'd75843;
+    localparam logic [31:0] DIV_G4 = 32'd63776;
+    localparam logic [31:0] DIV_A4 = 32'd56818;
+    localparam logic [31:0] DIV_C5 = 32'd47778;
+    localparam logic [31:0] DIV_D5 = 32'd42566;
+    localparam logic [31:0] DIV_E5 = 32'd37922;
+
+    // tempo tick (125 ms @ 50 MHz)
+    localparam logic [31:0] TICK_CYCLES = 32'd6_250_000;
+
+    // state
+    logic [31:0] tempo_ps, tempo_ns;       // tempo down-counter
+    logic [3:0]  idx_ps,   idx_ns;         // which note in the sequence (0..N-1)
+    logic [3:0]  dur_ps,   dur_ns;         // remaining ticks for this note
+    logic [31:0] cur_div_ps, cur_div_ns;   // latched note_div for this step
+    logic        playing_ps, playing_ns;
+
+    // combinational
+    always_comb begin
+        tempo_ns   = tempo_ps;
+        idx_ns     = idx_ps;
+        dur_ns     = dur_ps;
+        cur_div_ns = cur_div_ps;
+        playing_ns = playing_ps;
+
+        // defaults
+        note_div = cur_div_ps;
+        playing  = playing_ps;
+
+        // choose current note/div + base duration from idx (case-based “ROM”)
+        // dur_base in ticks (1..4). Index map makes a simple pleasant loop.
+        logic [31:0] div_sel;
+        logic [3:0]  dur_base;
+        div_sel = cur_div_ps;
+        dur_base = 4'd2;
+
+        unique case (idx_ps)
+            4'd0: begin div_sel = DIV_C5; dur_base = 4'd2; end
+            4'd1: begin div_sel = DIV_D5; dur_base = 4'd2; end
+            4'd2: begin div_sel = DIV_E5; dur_base = 4'd2; end
+            4'd3: begin div_sel = DIV_C5; dur_base = 4'd2; end
+            4'd4: begin div_sel = DIV_E4; dur_base = 4'd2; end
+            4'd5: begin div_sel = DIV_G4; dur_base = 4'd2; end
+            4'd6: begin div_sel = DIV_A4; dur_base = 4'd2; end
+            4'd7: begin div_sel = DIV_E4; dur_base = 4'd2; end
+            default: begin div_sel = DIV_C4; dur_base = 4'd2; end
+        endcase
+
+        // running?
+        if (!play_en) begin
+            playing_ns = 1'b0;
+            cur_div_ns = 32'd0;
+            dur_ns     = 4'd0;
+            tempo_ns   = 32'd0;
+        end else begin
+            playing_ns = 1'b1;
+
+            // start new note if needed
+            if (dur_ps == 4'd0) begin
+                cur_div_ns = div_sel;
+                dur_ns     = dur_base;
+                tempo_ns   = TICK_CYCLES;
+            end else begin
+                // tempo tick
+                if (tempo_ps == 32'd0) begin
+                    if (dur_ps > 4'd0) dur_ns = dur_ps - 4'd1;
+                    tempo_ns = TICK_CYCLES;
+                    if (dur_ps == 4'd1) begin
+                        // next note on last tick
+                        if (idx_ps == 4'd7) idx_ns = 4'd0;
+                        else                idx_ns = idx_ps + 4'd1;
+                    end
+                end else begin
+                    tempo_ns = tempo_ps - 32'd1;
+                end
+            end
+        end
+
+        note_div = cur_div_ns;
+        playing  = playing_ns;
+    end
+
+    // sequential
+    always_ff @(posedge clk) begin
+        if (reset) begin
+            tempo_ps   <= 32'd0;
+            idx_ps     <= 4'd0;
+            dur_ps     <= 4'd0;
+            cur_div_ps <= 32'd0;
+            playing_ps <= 1'b0;
+        end else begin
+            tempo_ps   <= tempo_ns;
+            idx_ps     <= idx_ns;
+            dur_ps     <= dur_ns;
+            cur_div_ps <= cur_div_ns;
+            playing_ps <= playing_ns;
+        end
+    end
+endmodule
+
+module SFX_Die (clk, reset, die_pulse, note_div, active);
+
+    input  logic       clk, reset;           // active-HIGH, synchronous
+    input  logic       die_pulse;            // 1-cycle pulse to trigger SFX
+    output logic [31:0] note_div;            // half-period for SFX note (0=mute)
+    output logic       active;               // 1 while SFX is playing
+
+    // same 50 MHz divisors
+    localparam logic [31:0] DIV_A5 = 32'd28409;
+    localparam logic [31:0] DIV_E5 = 32'd37922;
+    localparam logic [31:0] DIV_C5 = 32'd47778;
+    localparam logic [31:0] DIV_A4 = 32'd56818;
+    localparam logic [31:0] DIV_E4 = 32'd75843;
+    localparam logic [31:0] DIV_C4 = 32'd95555;
+
+    // short tick ~60 ms (feel “snappy”)
+    localparam logic [31:0] TICK_CYCLES = 32'd3_000_000;
+
+    // state
+    logic [31:0] tempo_ps, tempo_ns;
+    logic [2:0]  step_ps,  step_ns;   // 0..5 (6 steps)
+    logic        act_ps,   act_ns;
+    logic [31:0] div_ps,   div_ns;
+
+    // combinational
+    always_comb begin
+        tempo_ns = tempo_ps;
+        step_ns  = step_ps;
+        act_ns   = act_ps;
+        div_ns   = div_ps;
+
+        // default outputs
+        note_div = div_ps;
+        active   = act_ps;
+
+        // start on pulse if idle
+        if (!act_ps) begin
+            if (die_pulse) begin
+                act_ns   = 1'b1;
+                step_ns  = 3'd0;
+                tempo_ns = TICK_CYCLES;
+                div_ns   = DIV_A5; // first note
+            end else begin
+                act_ns   = 1'b0;
+                div_ns   = 32'd0;
+                tempo_ns = 32'd0;
+            end
+        end else begin
+            // playing: advance on tick
+            if (tempo_ps == 32'd0) begin
+                tempo_ns = TICK_CYCLES;
+                // pick next note by step
+                unique case (step_ps)
+                    3'd0: begin div_ns = DIV_E5; step_ns = 3'd1; end
+                    3'd1: begin div_ns = DIV_C5; step_ns = 3'd2; end
+                    3'd2: begin div_ns = DIV_A4; step_ns = 3'd3; end
+                    3'd3: begin div_ns = DIV_E4; step_ns = 3'd4; end
+                    3'd4: begin div_ns = DIV_C4; step_ns = 3'd5; end
+                    default: begin
+                        // done
+                        act_ns = 1'b0;
+                        div_ns = 32'd0;
+                        step_ns = 3'd0;
+                        tempo_ns = 32'd0;
+                    end
+                endcase
+            end else begin
+                tempo_ns = tempo_ps - 32'd1;
+            end
+        end
+
+        note_div = div_ns;
+        active   = act_ns;
+    end
+
+    // sequential
+    always_ff @(posedge clk) begin
+        if (reset) begin
+            tempo_ps <= 32'd0;
+            step_ps  <= 3'd0;
+            act_ps   <= 1'b0;
+            div_ps   <= 32'd0;
+        end else begin
+            tempo_ps <= tempo_ns;
+            step_ps  <= step_ns;
+            act_ps   <= act_ns;
+            div_ps   <= div_ns;
+        end
+    end
+endmodule

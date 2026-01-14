@@ -1,0 +1,77 @@
+module hit_display (clk, hit, hex2, hex3, hex4, hex5);
+    // Ports (inside, like your format)
+    input  logic       clk;
+    input  logic       hit;
+    output logic [6:0] hex2, hex3, hex4, hex5;  // HEX2 = right, HEX5 = left
+
+    // Message buffer (your array style)
+    logic [7:0] chars[31:0];
+    logic [4:0] len;
+
+    // Scroll index + timing
+    integer      i;
+    logic        hit_d;
+    logic [31:0] tick_count;
+
+    // ~0.25 s at 50 MHz
+    localparam int TICK_MAX = 12_500_000;
+
+    // ---------------- Build message + map to HEX ----------------
+    always_comb begin
+        integer k;
+        // defaults: spaces
+        for (k = 0; k < 32; k = k + 1) chars[k] = " ";
+        len = 0;
+
+        if (hit) begin
+            // "DEATH"
+            chars[0]="D"; chars[1]="E"; chars[2]="A"; chars[3]="T"; chars[4]="H";
+            len = 5;
+        end else begin
+            // "LOL"
+            chars[0]="L"; chars[1]="O"; chars[2]="L";
+            len = 3;
+        end
+
+        // Window of 4 chars onto the message (HEX5..HEX2 left→right)
+        hex5 = leds(chars[i+0]);
+        hex4 = leds(chars[i+1]);
+        hex3 = leds(chars[i+2]);
+        hex2 = leds(chars[i+3]);
+    end
+
+    // ---------------- Tick + scroll index ----------------
+    always_ff @(posedge clk) begin
+        tick_count <= tick_count + 1;
+
+        // Restart scroll when hit changes
+        if (hit != hit_d) begin
+            hit_d      <= hit;
+            i          <= 0;
+            tick_count <= 0;
+        end else if (tick_count == TICK_MAX) begin
+            tick_count <= 0;
+            if (len > 4) begin
+                if (i < (len - 4)) i <= i + 1;
+                else               i <= 0;
+            end else begin
+                i <= 0; // no scroll if message fits
+            end
+        end
+    end
+
+    // ---------------- 7-seg encoder (active-LOW) ----------------
+    function logic [6:0] leds(input logic [7:0] ch);
+        case (ch)
+            "A": leds = ~(7'b1110111);
+            "D": leds = ~(7'b1011110); // looks like 'd' but fine for D
+            "E": leds = ~(7'b1111001);
+            "H": leds = ~(7'b1110110);
+            "L": leds = ~(7'b0111000);
+            "O": leds = ~(7'b0111111);
+            "T": leds = ~(7'b1111000);
+            " ": leds = 7'b1111111;    // blank
+            default: leds = 7'b1111111;
+        endcase
+    endfunction
+endmodule

@@ -1,0 +1,565 @@
+# Reading C:/intelFPGA/17.0/modelsim_ase/tcl/vsim/pref.tcl
+do Sprite_lab.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 18:53:23 on Aug 20,2025
+# vlog -reportprogress 300 ./Sprite.sv 
+# -- Compiling module Sprite
+# 
+# Top level modules:
+# 	Sprite
+# End time: 18:53:24 on Aug 20,2025, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# vsim -voptargs=""+acc"" -t 1ps -lib work Sprite_testbench 
+# Start time: 18:53:25 on Aug 20,2025
+# Loading sv_std.std
+# Loading work.Sprite_testbench
+# Loading work.Sprite
+# ** Warning: (vsim-3017) ./Sprite.sv(108): [TFMPC] - Too few port connections. Expected 8, found 7.
+#    Time: 0 ps  Iteration: 0  Instance: /Sprite_testbench/dut File: ./Sprite.sv
+# ** Warning: (vsim-3722) ./Sprite.sv(108): [TFMPC] - Missing connection for port 'hit'.
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: Yashas31  Hostname: ENGR-COEGPU-21  ProcessID: 1740
+#           Attempting to use alternate WLF file "./wlftx5xvzd".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlftx5xvzd
+# .main_pane.wave.interior.cs.body.pw.wf
+# .main_pane.structure.interior.cs.body.struct
+# .main_pane.objects.interior.cs.body.tree
+# ** Note: $stop    : ./Sprite.sv(237)
+#    Time: 8350 ps  Iteration: 1  Instance: /Sprite_testbench
+# Break in Module Sprite_testbench at ./Sprite.sv line 237
+do Sprite_lab.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 18:56:06 on Aug 20,2025
+# vlog -reportprogress 300 ./Sprite.sv 
+# -- Compiling module Sprite
+# -- Compiling module Sprite_testbench
+# 
+# Top level modules:
+# 	Sprite_testbench
+# End time: 18:56:06 on Aug 20,2025, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 18:56:12 on Aug 20,2025, Elapsed time: 0:02:47
+# Errors: 0, Warnings: 4
+# vsim -voptargs=""+acc"" -t 1ps -lib work Sprite_testbench 
+# Start time: 18:56:12 on Aug 20,2025
+# Loading sv_std.std
+# Loading work.Sprite_testbench
+# Loading work.Sprite
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: Yashas31  Hostname: ENGR-COEGPU-21  ProcessID: 1740
+#           Attempting to use alternate WLF file "./wlftw9dh56".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlftw9dh56
+# .main_pane.wave.interior.cs.body.pw.wf
+# .main_pane.structure.interior.cs.body.struct
+# .main_pane.objects.interior.cs.body.tree
+# ** Note: $stop    : ./Sprite.sv(239)
+#    Time: 8350 ps  Iteration: 1  Instance: /Sprite_testbench
+# Break in Module Sprite_testbench at ./Sprite.sv line 239
+do SPIKE_lab.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 19:00:44 on Aug 20,2025
+# vlog -reportprogress 300 ./SPIKE.sv 
+# -- Compiling module SPIKE
+# 
+# Top level modules:
+# 	SPIKE
+# End time: 19:00:45 on Aug 20,2025, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# End time: 19:00:47 on Aug 20,2025, Elapsed time: 0:04:35
+# Errors: 0, Warnings: 2
+# vsim -voptargs=""+acc"" -t 1ps -lib work SPIKE_testbench 
+# Start time: 19:00:47 on Aug 20,2025
+# Loading sv_std.std
+# Loading work.SPIKE_testbench
+# Loading work.SPIKE
+# ** Error: (vsim-3694) The implicit port connection (.*) did not find a matching port, net, variable or interface instance in SPIKE_testbench for port 'hit'.
+#    Time: 0 ps  Iteration: 0  Instance: /SPIKE_testbench/dut File: ./SPIKE.sv
+# ** Warning: (vsim-3017) ./SPIKE.sv(170): [TFMPC] - Too few port connections. Expected 4, found 3.
+#    Time: 0 ps  Iteration: 0  Instance: /SPIKE_testbench/dut File: ./SPIKE.sv
+# ** Warning: (vsim-3722) ./SPIKE.sv(170): [TFMPC] - Missing connection for port 'hit'.
+# Error loading design
+# Error: Error loading design
+#        Pausing macro execution
+# MACRO ./SPIKE_lab.do PAUSED at line 13
+do SPIKE_lab.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 19:02:59 on Aug 20,2025
+# vlog -reportprogress 300 ./SPIKE.sv 
+# -- Compiling module SPIKE
+# -- Compiling module Spike_testbench
+# 
+# Top level modules:
+# 	SPIKE
+# 	Spike_testbench
+# End time: 19:02:59 on Aug 20,2025, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -voptargs=""+acc"" -t 1ps -lib work SPIKE_testbench 
+# Start time: 19:00:47 on Aug 20,2025
+# Loading sv_std.std
+# Loading work.SPIKE_testbench
+# Loading work.SPIKE
+# ** Error: (vsim-3694) The implicit port connection (.*) did not find a matching port, net, variable or interface instance in SPIKE_testbench for port 'hit'.
+#    Time: 0 ps  Iteration: 0  Instance: /SPIKE_testbench/dut File: ./SPIKE.sv
+# ** Warning: (vsim-3017) ./SPIKE.sv(170): [TFMPC] - Too few port connections. Expected 4, found 3.
+#    Time: 0 ps  Iteration: 0  Instance: /SPIKE_testbench/dut File: ./SPIKE.sv
+# ** Warning: (vsim-3722) ./SPIKE.sv(170): [TFMPC] - Missing connection for port 'hit'.
+# Error loading design
+# Error: Error loading design
+#        Pausing macro execution
+# MACRO ./SPIKE_lab.do PAUSED at line 13
+do SPIKE_lab.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 19:03:37 on Aug 20,2025
+# vlog -reportprogress 300 ./SPIKE.sv 
+# -- Compiling module SPIKE
+# -- Compiling module Spike_testbench
+# 
+# Top level modules:
+# 	SPIKE
+# 	Spike_testbench
+# End time: 19:03:37 on Aug 20,2025, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -voptargs=""+acc"" -t 1ps -lib work SPIKE_testbench 
+# Start time: 19:00:47 on Aug 20,2025
+# Loading sv_std.std
+# Loading work.SPIKE_testbench
+# Loading work.SPIKE
+# ** Error: (vsim-3694) The implicit port connection (.*) did not find a matching port, net, variable or interface instance in SPIKE_testbench for port 'hit'.
+#    Time: 0 ps  Iteration: 0  Instance: /SPIKE_testbench/dut File: ./SPIKE.sv
+# ** Warning: (vsim-3017) ./SPIKE.sv(170): [TFMPC] - Too few port connections. Expected 4, found 3.
+#    Time: 0 ps  Iteration: 0  Instance: /SPIKE_testbench/dut File: ./SPIKE.sv
+# ** Warning: (vsim-3722) ./SPIKE.sv(170): [TFMPC] - Missing connection for port 'hit'.
+# Error loading design
+# Error: Error loading design
+#        Pausing macro execution
+# MACRO ./SPIKE_lab.do PAUSED at line 13
+do Sprite_lab.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 19:04:14 on Aug 20,2025
+# vlog -reportprogress 300 ./Sprite.sv 
+# -- Compiling module Sprite
+# -- Compiling module Sprite_testbench
+# 
+# Top level modules:
+# 	Sprite_testbench
+# End time: 19:04:14 on Aug 20,2025, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -voptargs=""+acc"" -t 1ps -lib work Sprite_testbench 
+# Start time: 19:00:47 on Aug 20,2025
+# Loading sv_std.std
+# Loading work.Sprite_testbench
+# Loading work.Sprite
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: Yashas31  Hostname: ENGR-COEGPU-21  ProcessID: 1740
+#           Attempting to use alternate WLF file "./wlftzq4btz".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlftzq4btz
+# .main_pane.wave.interior.cs.body.pw.wf
+# .main_pane.structure.interior.cs.body.struct
+# .main_pane.objects.interior.cs.body.tree
+# ** Note: $stop    : ./Sprite.sv(239)
+#    Time: 8350 ps  Iteration: 1  Instance: /Sprite_testbench
+# Break in Module Sprite_testbench at ./Sprite.sv line 239
+do SPIKE_lab.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 19:04:31 on Aug 20,2025
+# vlog -reportprogress 300 ./SPIKE.sv 
+# -- Compiling module SPIKE
+# -- Compiling module Spike_testbench
+# 
+# Top level modules:
+# 	SPIKE
+# 	Spike_testbench
+# End time: 19:04:31 on Aug 20,2025, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 19:04:33 on Aug 20,2025, Elapsed time: 0:03:46
+# Errors: 3, Warnings: 8
+# vsim -voptargs=""+acc"" -t 1ps -lib work SPIKE_testbench 
+# Start time: 19:04:33 on Aug 20,2025
+# Loading sv_std.std
+# Loading work.SPIKE_testbench
+# Loading work.SPIKE
+# ** Error: (vsim-3694) The implicit port connection (.*) did not find a matching port, net, variable or interface instance in SPIKE_testbench for port 'hit'.
+#    Time: 0 ps  Iteration: 0  Instance: /SPIKE_testbench/dut File: ./SPIKE.sv
+# ** Warning: (vsim-3017) ./SPIKE.sv(170): [TFMPC] - Too few port connections. Expected 4, found 3.
+#    Time: 0 ps  Iteration: 0  Instance: /SPIKE_testbench/dut File: ./SPIKE.sv
+# ** Warning: (vsim-3722) ./SPIKE.sv(170): [TFMPC] - Missing connection for port 'hit'.
+# Error loading design
+# Error: Error loading design
+#        Pausing macro execution
+# MACRO ./SPIKE_lab.do PAUSED at line 13
+do Sprite_lab.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 19:05:46 on Aug 20,2025
+# vlog -reportprogress 300 ./Sprite.sv 
+# -- Compiling module Sprite
+# -- Compiling module Sprite_testbench
+# 
+# Top level modules:
+# 	Sprite_testbench
+# End time: 19:05:47 on Aug 20,2025, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# vsim -voptargs=""+acc"" -t 1ps -lib work Sprite_testbench 
+# Start time: 19:04:33 on Aug 20,2025
+# Loading sv_std.std
+# Loading work.Sprite_testbench
+# Loading work.Sprite
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: Yashas31  Hostname: ENGR-COEGPU-21  ProcessID: 1740
+#           Attempting to use alternate WLF file "./wlfttbk6jx".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlfttbk6jx
+# .main_pane.wave.interior.cs.body.pw.wf
+# .main_pane.structure.interior.cs.body.struct
+# .main_pane.objects.interior.cs.body.tree
+# ** Note: $stop    : ./Sprite.sv(239)
+#    Time: 8350 ps  Iteration: 1  Instance: /Sprite_testbench
+# Break in Module Sprite_testbench at ./Sprite.sv line 239
+do SPIKE_lab.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 19:05:58 on Aug 20,2025
+# vlog -reportprogress 300 ./SPIKE.sv 
+# -- Compiling module SPIKE
+# -- Compiling module Spike_testbench
+# 
+# Top level modules:
+# 	Spike_testbench
+# End time: 19:05:58 on Aug 20,2025, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 19:06:01 on Aug 20,2025, Elapsed time: 0:01:28
+# Errors: 1, Warnings: 4
+# vsim -voptargs=""+acc"" -t 1ps -lib work SPIKE_testbench 
+# Start time: 19:06:01 on Aug 20,2025
+# Loading sv_std.std
+# Loading work.SPIKE_testbench
+# Loading work.SPIKE
+# ** Error: (vsim-3694) The implicit port connection (.*) did not find a matching port, net, variable or interface instance in SPIKE_testbench for port 'hit'.
+#    Time: 0 ps  Iteration: 0  Instance: /SPIKE_testbench/dut File: ./SPIKE.sv
+# ** Warning: (vsim-3017) ./SPIKE.sv(170): [TFMPC] - Too few port connections. Expected 4, found 3.
+#    Time: 0 ps  Iteration: 0  Instance: /SPIKE_testbench/dut File: ./SPIKE.sv
+# ** Warning: (vsim-3722) ./SPIKE.sv(170): [TFMPC] - Missing connection for port 'hit'.
+# Error loading design
+# Error: Error loading design
+#        Pausing macro execution
+# MACRO ./SPIKE_lab.do PAUSED at line 13
+do SPIKE_lab.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 19:08:35 on Aug 20,2025
+# vlog -reportprogress 300 ./SPIKE.sv 
+# -- Compiling module SPIKE
+# -- Compiling module Spike_testbench
+# 
+# Top level modules:
+# 	Spike_testbench
+# End time: 19:08:35 on Aug 20,2025, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -voptargs=""+acc"" -t 1ps -lib work SPIKE_testbench 
+# Start time: 19:06:01 on Aug 20,2025
+# Loading sv_std.std
+# Loading work.SPIKE_testbench
+# Loading work.SPIKE
+# ** Error: (vsim-3694) The implicit port connection (.*) did not find a matching port, net, variable or interface instance in SPIKE_testbench for port 'hit'.
+#    Time: 0 ps  Iteration: 0  Instance: /SPIKE_testbench/dut File: ./SPIKE.sv
+# ** Warning: (vsim-3017) ./SPIKE.sv(170): [TFMPC] - Too few port connections. Expected 4, found 3.
+#    Time: 0 ps  Iteration: 0  Instance: /SPIKE_testbench/dut File: ./SPIKE.sv
+# ** Warning: (vsim-3722) ./SPIKE.sv(170): [TFMPC] - Missing connection for port 'hit'.
+# Error loading design
+# Error: Error loading design
+#        Pausing macro execution
+# MACRO ./SPIKE_lab.do PAUSED at line 13
+do Sprite_lab.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 19:09:55 on Aug 20,2025
+# vlog -reportprogress 300 ./Sprite.sv 
+# -- Compiling module Sprite
+# -- Compiling module Sprite_testbench
+# 
+# Top level modules:
+# 	Sprite_testbench
+# End time: 19:09:55 on Aug 20,2025, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -voptargs=""+acc"" -t 1ps -lib work Sprite_testbench 
+# Start time: 19:06:01 on Aug 20,2025
+# Loading sv_std.std
+# Loading work.Sprite_testbench
+# Loading work.Sprite
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: Yashas31  Hostname: ENGR-COEGPU-21  ProcessID: 1740
+#           Attempting to use alternate WLF file "./wlftkjs7cj".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlftkjs7cj
+# .main_pane.wave.interior.cs.body.pw.wf
+# .main_pane.structure.interior.cs.body.struct
+# .main_pane.objects.interior.cs.body.tree
+# ** Note: $stop    : ./Sprite.sv(239)
+#    Time: 8350 ps  Iteration: 1  Instance: /Sprite_testbench
+# Break in Module Sprite_testbench at ./Sprite.sv line 239
+do SPIKE_lab.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 19:10:04 on Aug 20,2025
+# vlog -reportprogress 300 ./SPIKE.sv 
+# -- Compiling module SPIKE
+# -- Compiling module Spike_testbench
+# 
+# Top level modules:
+# 	Spike_testbench
+# End time: 19:10:04 on Aug 20,2025, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 19:10:06 on Aug 20,2025, Elapsed time: 0:04:05
+# Errors: 2, Warnings: 6
+# vsim -voptargs=""+acc"" -t 1ps -lib work SPIKE_testbench 
+# Start time: 19:10:06 on Aug 20,2025
+# Loading sv_std.std
+# Loading work.SPIKE_testbench
+# Loading work.SPIKE
+# ** Error: (vsim-3694) The implicit port connection (.*) did not find a matching port, net, variable or interface instance in SPIKE_testbench for port 'hit'.
+#    Time: 0 ps  Iteration: 0  Instance: /SPIKE_testbench/dut File: ./SPIKE.sv
+# ** Warning: (vsim-3017) ./SPIKE.sv(170): [TFMPC] - Too few port connections. Expected 4, found 3.
+#    Time: 0 ps  Iteration: 0  Instance: /SPIKE_testbench/dut File: ./SPIKE.sv
+# ** Warning: (vsim-3722) ./SPIKE.sv(170): [TFMPC] - Missing connection for port 'hit'.
+# Error loading design
+# Error: Error loading design
+#        Pausing macro execution
+# MACRO ./SPIKE_lab.do PAUSED at line 13
+do SPIKE_lab.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 19:10:50 on Aug 20,2025
+# vlog -reportprogress 300 ./SPIKE.sv 
+# -- Compiling module SPIKE
+# -- Compiling module Spike_testbench
+# 
+# Top level modules:
+# 	Spike_testbench
+# End time: 19:10:50 on Aug 20,2025, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -voptargs=""+acc"" -t 1ps -lib work SPIKE_testbench 
+# Start time: 19:10:06 on Aug 20,2025
+# Loading sv_std.std
+# Loading work.SPIKE_testbench
+# Loading work.SPIKE
+# ** Error: (vsim-3694) The implicit port connection (.*) did not find a matching port, net, variable or interface instance in SPIKE_testbench for port 'hit'.
+#    Time: 0 ps  Iteration: 0  Instance: /SPIKE_testbench/dut File: ./SPIKE.sv
+# ** Warning: (vsim-3017) ./SPIKE.sv(170): [TFMPC] - Too few port connections. Expected 4, found 3.
+#    Time: 0 ps  Iteration: 0  Instance: /SPIKE_testbench/dut File: ./SPIKE.sv
+# ** Warning: (vsim-3722) ./SPIKE.sv(170): [TFMPC] - Missing connection for port 'hit'.
+# Error loading design
+# Error: Error loading design
+#        Pausing macro execution
+# MACRO ./SPIKE_lab.do PAUSED at line 13
+do SPIKE_lab.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 19:11:41 on Aug 20,2025
+# vlog -reportprogress 300 ./SPIKE.sv 
+# -- Compiling module SPIKE
+# -- Compiling module Spike_testbench
+# 
+# Top level modules:
+# 	Spike_testbench
+# End time: 19:11:41 on Aug 20,2025, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -voptargs=""+acc"" -t 1ps -lib work SPIKE_testbench 
+# Start time: 19:10:06 on Aug 20,2025
+# Loading sv_std.std
+# Loading work.SPIKE_testbench
+# Loading work.SPIKE
+# ** Error: (vsim-3694) The implicit port connection (.*) did not find a matching port, net, variable or interface instance in SPIKE_testbench for port 'hit'.
+#    Time: 0 ps  Iteration: 0  Instance: /SPIKE_testbench/dut File: ./SPIKE.sv
+# ** Warning: (vsim-3017) ./SPIKE.sv(170): [TFMPC] - Too few port connections. Expected 4, found 3.
+#    Time: 0 ps  Iteration: 0  Instance: /SPIKE_testbench/dut File: ./SPIKE.sv
+# ** Warning: (vsim-3722) ./SPIKE.sv(170): [TFMPC] - Missing connection for port 'hit'.
+# Error loading design
+# Error: Error loading design
+#        Pausing macro execution
+# MACRO ./SPIKE_lab.do PAUSED at line 13
+do SPIKE_lab.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 19:15:19 on Aug 20,2025
+# vlog -reportprogress 300 ./SPIKE.sv 
+# -- Compiling module SPIKE
+# -- Compiling module Spike_testbench
+# 
+# Top level modules:
+# 	Spike_testbench
+# End time: 19:15:19 on Aug 20,2025, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -voptargs=""+acc"" -t 1ps -lib work SPIKE_testbench 
+# Start time: 19:10:06 on Aug 20,2025
+# Loading sv_std.std
+# Loading work.SPIKE_testbench
+# Loading work.SPIKE
+# ** Error: (vsim-3694) The implicit port connection (.*) did not find a matching port, net, variable or interface instance in SPIKE_testbench for port 'hit'.
+#    Time: 0 ps  Iteration: 0  Instance: /SPIKE_testbench/dut File: ./SPIKE.sv
+# ** Warning: (vsim-3017) ./SPIKE.sv(170): [TFMPC] - Too few port connections. Expected 4, found 3.
+#    Time: 0 ps  Iteration: 0  Instance: /SPIKE_testbench/dut File: ./SPIKE.sv
+# ** Warning: (vsim-3722) ./SPIKE.sv(170): [TFMPC] - Missing connection for port 'hit'.
+# Error loading design
+# Error: Error loading design
+#        Pausing macro execution
+# MACRO ./SPIKE_lab.do PAUSED at line 13
+do SPIKE_lab.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 19:16:11 on Aug 20,2025
+# vlog -reportprogress 300 ./SPIKE.sv 
+# -- Compiling module SPIKE
+# -- Compiling module Spike_testbench
+# 
+# Top level modules:
+# 	Spike_testbench
+# End time: 19:16:11 on Aug 20,2025, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -voptargs=""+acc"" -t 1ps SPIKE_testbench 
+# Start time: 19:10:06 on Aug 20,2025
+# Loading sv_std.std
+# Loading work.SPIKE_testbench
+# Loading work.SPIKE
+# ** Error: (vsim-3694) The implicit port connection (.*) did not find a matching port, net, variable or interface instance in SPIKE_testbench for port 'hit'.
+#    Time: 0 ps  Iteration: 0  Instance: /SPIKE_testbench/dut File: ./SPIKE.sv
+# ** Warning: (vsim-3017) ./SPIKE.sv(170): [TFMPC] - Too few port connections. Expected 4, found 3.
+#    Time: 0 ps  Iteration: 0  Instance: /SPIKE_testbench/dut File: ./SPIKE.sv
+# ** Warning: (vsim-3722) ./SPIKE.sv(170): [TFMPC] - Missing connection for port 'hit'.
+# Error loading design
+# Error: Error loading design
+#        Pausing macro execution
+# MACRO ./SPIKE_lab.do PAUSED at line 13
+do SPIKE_lab.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 19:19:00 on Aug 20,2025
+# vlog -reportprogress 300 ./SPIKE.sv 
+# -- Compiling module SPIKE
+# -- Compiling module SPIKE_testbench
+# 
+# Top level modules:
+# 	SPIKE_testbench
+# End time: 19:19:00 on Aug 20,2025, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -voptargs=""+acc"" -t 1ps SPIKE_testbench 
+# Start time: 19:10:06 on Aug 20,2025
+# Loading sv_std.std
+# Loading work.SPIKE_testbench
+# Loading work.SPIKE
+# .main_pane.wave.interior.cs.body.pw.wf
+# .main_pane.structure.interior.cs.body.struct
+# .main_pane.objects.interior.cs.body.tree
+# ** Note: $stop    : ./SPIKE.sv(200)
+#    Time: 2650 ps  Iteration: 1  Instance: /SPIKE_testbench
+# Break in Module SPIKE_testbench at ./SPIKE.sv line 200
+add wave -position end  sim:/SPIKE_testbench/CLOCK_PERIOD
+add wave -position end  sim:/SPIKE_testbench/clk
+add wave -position end  sim:/SPIKE_testbench/reset
+add wave -position end  sim:/SPIKE_testbench/hit
+add wave -position end  sim:/SPIKE_testbench/grid
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: Yashas31  Hostname: ENGR-COEGPU-21  ProcessID: 1740
+#           Attempting to use alternate WLF file "./wlftjb8n7g".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlftjb8n7g
+write format wave -window .main_pane.wave.interior.cs.body.pw.wf U:/EE271/EE271_lab/Lab6/SPIKE_wave.do
+do SPIKE_lab.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 19:19:54 on Aug 20,2025
+# vlog -reportprogress 300 ./SPIKE.sv 
+# -- Compiling module SPIKE
+# -- Compiling module SPIKE_testbench
+# 
+# Top level modules:
+# 	SPIKE_testbench
+# End time: 19:19:55 on Aug 20,2025, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# End time: 19:19:57 on Aug 20,2025, Elapsed time: 0:09:51
+# Errors: 5, Warnings: 12
+# vsim -voptargs=""+acc"" -t 1ps SPIKE_testbench 
+# Start time: 19:19:57 on Aug 20,2025
+# Loading sv_std.std
+# Loading work.SPIKE_testbench
+# Loading work.SPIKE
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: Yashas31  Hostname: ENGR-COEGPU-21  ProcessID: 1740
+#           Attempting to use alternate WLF file "./wlftx7558i".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlftx7558i
+# .main_pane.wave.interior.cs.body.pw.wf
+# .main_pane.structure.interior.cs.body.struct
+# .main_pane.objects.interior.cs.body.tree
+# ** Note: $stop    : ./SPIKE.sv(200)
+#    Time: 2650 ps  Iteration: 1  Instance: /SPIKE_testbench
+# Break in Module SPIKE_testbench at ./SPIKE.sv line 200
+do SPIKE_lab.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 19:21:13 on Aug 20,2025
+# vlog -reportprogress 300 ./SPIKE.sv 
+# -- Compiling module SPIKE
+# -- Compiling module SPIKE_testbench
+# 
+# Top level modules:
+# 	SPIKE_testbench
+# End time: 19:21:13 on Aug 20,2025, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 19:21:16 on Aug 20,2025, Elapsed time: 0:01:19
+# Errors: 0, Warnings: 2
+# vsim -voptargs=""+acc"" -t 1ps SPIKE_testbench 
+# Start time: 19:21:16 on Aug 20,2025
+# Loading sv_std.std
+# Loading work.SPIKE_testbench
+# Loading work.SPIKE
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: Yashas31  Hostname: ENGR-COEGPU-21  ProcessID: 1740
+#           Attempting to use alternate WLF file "./wlfteh8wgw".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlfteh8wgw
+# .main_pane.wave.interior.cs.body.pw.wf
+# .main_pane.structure.interior.cs.body.struct
+# .main_pane.objects.interior.cs.body.tree
+# ** Note: $stop    : ./SPIKE.sv(200)
+#    Time: 2650 ps  Iteration: 1  Instance: /SPIKE_testbench
+# Break in Module SPIKE_testbench at ./SPIKE.sv line 200
+do SPIKE_lab.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 19:22:16 on Aug 20,2025
+# vlog -reportprogress 300 ./SPIKE.sv 
+# -- Compiling module SPIKE
+# -- Compiling module SPIKE_testbench
+# 
+# Top level modules:
+# 	SPIKE_testbench
+# End time: 19:22:16 on Aug 20,2025, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# End time: 19:22:25 on Aug 20,2025, Elapsed time: 0:01:09
+# Errors: 0, Warnings: 2
+# vsim -voptargs=""+acc"" -t 1ps SPIKE_testbench 
+# Start time: 19:22:25 on Aug 20,2025
+# Loading sv_std.std
+# Loading work.SPIKE_testbench
+# Loading work.SPIKE
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: Yashas31  Hostname: ENGR-COEGPU-21  ProcessID: 1740
+#           Attempting to use alternate WLF file "./wlftnxz6y7".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlftnxz6y7
+# .main_pane.wave.interior.cs.body.pw.wf
+# .main_pane.structure.interior.cs.body.struct
+# .main_pane.objects.interior.cs.body.tree
+# ** Note: $stop    : ./SPIKE.sv(202)
+#    Time: 5650 ps  Iteration: 1  Instance: /SPIKE_testbench
+# Break in Module SPIKE_testbench at ./SPIKE.sv line 202
